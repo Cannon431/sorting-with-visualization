@@ -1,0 +1,13 @@
+#app {
+    width: 700px;
+    margin: auto;
+}
+
+#canvas {
+    display: block;
+}
+
+#options {
+    margin-top: 10px;
+    text-align: center;
+}
