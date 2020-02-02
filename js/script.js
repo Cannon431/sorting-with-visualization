@@ -34,9 +34,9 @@ let sortAlgorithms = {
 
         let colors = array.colors;
         for (let i = 0; i < colors.length; i++) {
-            for (let j = i + 1; j < colors.length; j++) {
-                if (colors[i].value > colors[j].value) {
-                    [colors[i], colors[j]] = [colors[j], colors[i]];
+            for (let j = 0; j < colors.length - i - 1; j++) {
+                if (colors[j].value > colors[j + 1].value) {
+                    [colors[j], colors[j + 1]] = [colors[j + 1], colors[j]];
 
                     draw(colors, row);
                     await sleep(sleepMilliseconds);
@@ -47,14 +47,14 @@ let sortAlgorithms = {
         array.sorted = true;
     },
 
-
     async selection(array, row) {
         array.sorted = false;
 
-        let colors = array.colors, minIndex, length = colors.length;
-        for (let i = 0; i < length; i++) {
-            minIndex = i;
-            for (let j = i + 1; j < length; j++) {
+        let colors = array.colors;
+        for (let i = 0; i < colors.length - 1; i++) {
+            let minIndex = i;
+
+            for (let j = i + 1; j < colors.length; j++) {
                 if (colors[j].value < colors[minIndex].value) {
                     minIndex = j;
                 }
@@ -63,7 +63,25 @@ let sortAlgorithms = {
             [colors[i], colors[minIndex]] = [colors[minIndex], colors[i]];
 
             draw(colors, row);
-            await sleep(sleepMilliseconds)
+            await sleep(sleepMilliseconds);
+        }
+
+        array.sorted = true;
+    },
+
+    async selection2(array, row) {
+        array.sorted = false;
+
+        let colors = array.colors;
+        for (let i = 0; i < colors.length - 1; i++) {
+            for (let j = i + 1; j < colors.length; j++) {
+                if (colors[i].value > colors[j].value) {
+                    [colors[i], colors[j]] = [colors[j], colors[i]];
+
+                    draw(colors, row);
+                    await sleep(sleepMilliseconds);
+                }
+            }
         }
 
         array.sorted = true;
@@ -90,7 +108,7 @@ let sortAlgorithms = {
         }
 
         array.sorted = true;
-    },
+    }
 };
 
 let colors = [
@@ -153,7 +171,6 @@ document.querySelector('#sort').addEventListener('click', () => {
     }
 
     let algorithms = document.querySelector('#algorithms');
-
     for (let i = 0; i < table.length; i++) {
         sortAlgorithms[algorithms.options[algorithms.selectedIndex].value](table[i], i);
     }
