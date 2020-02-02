@@ -47,6 +47,39 @@ let sortAlgorithms = {
         array.sorted = true;
     },
 
+    async cocktail(array, row) {
+        array.sorted = false;
+
+        let colors = array.colors;
+
+        let left = 0, right = colors.length - 1;
+        while (left < right) {
+            for (let i = left; i < right; i++) {
+                if (colors[i].value > colors[i + 1].value) {
+                    [colors[i], colors[i + 1]] = [colors[i + 1], colors[i]];
+
+                    draw(colors, row);
+                    await sleep(sleepMilliseconds);
+                }
+            }
+
+            right--;
+
+            for (let i = right; i > left; i--) {
+                if (colors[i].value < colors[i - 1].value) {
+                    [colors[i], colors[i - 1]] = [colors[i - 1], colors[i]];
+
+                    draw(colors, row);
+                    await sleep(sleepMilliseconds);
+                }
+            }
+
+            left++;
+        }
+
+        array.sorted = true;
+    },
+
     async selection(array, row) {
         array.sorted = false;
 
